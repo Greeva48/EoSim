@@ -6,6 +6,7 @@ import json
 import os
 import shutil
 from datetime import datetime, timezone
+from xml.sax.saxutils import quoteattr
 
 from eosim.engine.backend import SimResult
 
@@ -41,7 +42,7 @@ def generate_junit(results: list, output: str = "out/reports/junit.xml") -> str:
     for r in results:
         name = r.get("platform", "unknown")
         t = r.get("duration_s", 0)
-        lines.append(f'  <testcase name="{name}" time="{t:.2f}">')
+        lines.append(f'  <testcase name={quoteattr(name)} time="{t:.2f}">')
         if not r.get("success", False):
             lines.append("    <failure>Simulation failed</failure>")
         lines.append("  </testcase>")
